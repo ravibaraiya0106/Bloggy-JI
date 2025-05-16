@@ -7,9 +7,12 @@ from django.contrib import messages
 from django.db.models import Count
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 import google.generativeai as genai
-
+import os
+import markdown
+from dotenv import load_dotenv
+# Load .env file
+load_dotenv()
 
 def BlogHome(request):
     Cats = Category.objects.all()
@@ -432,68 +435,41 @@ def EditBlog(request, b_id):
     return redirect('Profile')
 
 
+import google.generativeai as genai
+
 @login_required
 def FindContent(request):
     user = request.user
-    contents = Content.objects.filter(user=user)
+    contents = Content.objects.filter(user=user).order_by('-c_no')[:10][::-1]
     return render(request, 'blog/FindContent.html', {'contents': contents})
 
 
+@login_required
 def generate_content(request):
-    if request.method == "POST":
-        genai.configure(api_key="AIzaSyCtbOt72ZGcY_AZruXrVK8bNE2IRqok8WE")
-        # Set up generation configuration
-        generation_config = {
-            "temperature": 0.9,
-            "top_p": 1,
-            "top_k": 1,
-            "max_output_tokens": 2048,
-        }
+    if request.method == 'POST':
+        user_input = request.POST.get('search', '').strip()
+        if user_input:
+            api_key = os.getenv("API_KEY")
+            genai.configure(api_key=api_key)
+            model = genai.GenerativeModel("gemini-1.5-flash")
 
-        # Set up safety settings
-        safety_settings = [
-            {
-                "category": "HARM_CATEGORY_HARASSMENT",
-                "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-            },
-            {
-                "category": "HARM_CATEGORY_HATE_SPEECH",
-                "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-            },
-            {
-                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-                "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-            },
-            {
-                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-                "threshold": "BLOCK_MEDIUM_AND_ABOVE"
-            },
-        ]
+            # Start a conversation with empty history
+            convo = model.start_chat(history=[])
+            try:
+                # Send user input to the model
+                convo.send_message(user_input)
+                # Get model's response
+                ai_response = convo.last.text
+                html_response = markdown.markdown(ai_response)
+                # Save user input and AI response to DB
+                Content.objects.create(user=request.user, input=user_input, content=html_response)
 
-        # Initialize the model
-        model = genai.GenerativeModel(model_name="gemini-1.0-pro",
-                                      generation_config=generation_config,
-                                      safety_settings=safety_settings)
+                return redirect('FindContent')
+            except Exception as e:
+                error = str(e)
+                return render(request, 'blog/FindContent.html', {'error': error})
 
-        # Start a conversation with an empty history
-        convo = model.start_chat(history=[])
-        # Define exit keyword
-        exit_keywords = ['exit', 'quit', 'bye']
-        # Retrieve user input from the form
-        user_input = request.POST.get('search', '')
-        # Check if the user wants to exit
-        if user_input.lower() in exit_keywords:
-            return render(request, 'blog/FindContent.html')
-        # Send user input to the model
-        convo.send_message(user_input)
-        # Get the model's response
-        ai_response = f"{convo.last.text}"
-
-        user = request.user
-        content = Content(user=user, input=user_input, content=ai_response)
-        content.save()
-        return redirect('FindContent')
-
+    return render(request, 'blog/FindContent.html')
 
 def UserProfile(request, id):
     user = User.objects.get(id=id)

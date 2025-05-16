@@ -1,0 +1,88 @@
+.container {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    width: 100%;
+    height: 86%;
+    border: 2px solid purple;
+    border-radius: 10px;
+    background: linear-gradient(rgba(0, 0, 0, 0.737), rgba(0, 0, 0, 0.729)), url('/static/img/bg.jpg') top/cover no-repeat fixed;
+    padding: 15px;
+}
+
+.form-control {
+    border: 2px solid purple;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    height: 90%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.user-message-container,
+.ai-message-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.user-message-container {
+    justify-content: flex-end;
+}
+
+.ai-message-container {
+    justify-content: flex-start;
+}
+
+.user-message,
+.ai-message {
+    padding: 8px 12px;
+    border-radius: 15px;
+    width: fit-content;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: purple;
+    color: white;
+    text-align: right;
+}
+
+.ai-message {
+    background-color: white;
+    color: purple;
+    cursor: pointer;
+}
+
+.user-image,
+.ai-image {
+    height: 30px;
+    width: 55px;
+    border-radius: 50%;
+}
+
+.user-image {
+    margin-left: 10px;
+}
+
+.ai-image {
+    margin-right: 10px;
+}
+
+.tooltip-hover {
+    position: fixed;
+    background-color: purple;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    pointer-events: none;
+    z-index: 1000;
+    display: none;
+}

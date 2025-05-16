@@ -1,11 +1,55 @@
-.row
-{
-    margin-top: 50px;
-}
-.container
-{
+.container {
     overflow-y: auto;
-    overflow-y: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    padding: 15px;
+}
+
+.row {
+    margin-top: 50px;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    text-align: justify;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .col-9, .col-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .row {
+        margin-top: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    .row {
+        margin-top: 20px;
+    }
 }

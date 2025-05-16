@@ -40,8 +40,7 @@
     border-radius: 10px;
     max-width: 90%;
 }
-.ai-message
-{
+.ai-message {
     float: left;
     background-color: white;
     color: purple;
@@ -49,6 +48,29 @@
     border-radius: 10px;
     max-width: 90%;
     margin-top: 20px;
+    position: relative;
+    cursor: pointer; /* Indicates it's clickable */
+}
+
+/* Hover tooltip */
+.ai-message::after {
+    content: "Click to copy";
+    position: absolute;
+    top: -24px;
+    right: 10px;
+    background-color: #333;
+    color: #fff;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.ai-message:hover::after {
+    opacity: 1;
 }
 .form-control
 {
@@ -77,3 +99,4 @@
     margin-top: 50px;
 
 }
+

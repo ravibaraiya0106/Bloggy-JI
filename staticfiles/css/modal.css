@@ -1,0 +1,78 @@
+.add{
+    position: fixed;
+    bottom: 70;
+    right: 10;
+}
+.modal
+{
+  background: linear-gradient(rgba(0, 0, 0, 0.737),rgba(0, 0, 0, 0.729)),url('/static/img/bg.jpg')top/cover no-repeat fixed;
+}
+.modal-content
+{
+  background: #ffffff32;
+}
+.addbutton
+{
+    background-color: purple;
+    border-radius: 50%;
+    width:70%;
+}
+.img-fluid
+{
+    width: 70%;
+    height: auto;
+    margin:10px;
+}
+
+.card
+{
+    background-color: white;
+    border: 1px solid purple; /* border color */
+}
+
+.card-title
+{
+    color: purple; /* title color */
+}
+
+.card-text {
+    color: black; /* text color */
+}
+
+.form-label, .modal-title
+{
+    color:white;
+}
+.form-control
+{
+    border: 2px solid purple;
+}
+
+.btn {
+    background-color: purple; /* button background color */
+    border-color: purple; /* button border color */
+    color: white; /* button text color */
+}
+textarea
+{
+    border: 2px solid purple;
+}
+.btn:hover {
+    background-color: white; /* hover background color */
+    border-color: purple; /* hover border color */
+    color: purple; /* hover text color */
+}
+.search-result
+{
+    color: red;
+}
+.profile {
+    width: 100%;
+    max-width: 400px; /* Set your desired maximum width */
+    height: auto;
+    aspect-ratio: 1 / 1; /* Ensures the width and height are equal */
+    border-radius: 50%; /* Makes the image round */
+    object-fit: cover; /* Ensures the image covers the entire circle */
+    border: 2px solid purple;
+}
+ 

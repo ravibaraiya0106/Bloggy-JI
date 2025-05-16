@@ -1,52 +1,71 @@
 {% extends 'base.html' %}
-
 {% block smartaiactive %}active{% endblock %}
-
 {% load static %}
 
 {% block body %}
-<link rel="stylesheet" href="{% static 'css/FindContent.css' %}">
-<div class="container" style="margin-top: 100px; margin-bottom: 100px">
+<link rel="stylesheet" href="{% static 'css/FindContent1.css' %}">
+<div class="container">
     <div id="content-container" class="content-container">
         {% for c in contents %}
-        <div class="row mb-4">
-            {% if request.user.is_authenticated %}
-            <div class="col-12 d-flex align-items-start">
-                <img src="{{ request.user.profile.photo.url }}" class="user-image me-2" style="width: 50px; height: 50px;">
-                <div class="user-message flex-fill mt-1 p-2 rounded">
-                    {{ c.input }}
-                </div>
+        <!-- User Message -->
+        <div class="row mb-4 user-message-container">
+            <div class="user-message mt-1">
+                {{ c.input }}
             </div>
-            {% else %}
-            <div class="col-12 d-flex align-items-start">
-                <img src="{% static 'img/profile.jpeg' %}" class="user-image me-2" style="width: 50px; height: 50px;">
-                <div class="user-message flex-fill mt-1 p-2 rounded">
-                    {{ c.input }}
-                </div>
-            </div>
-            {% endif %}
-            <div class="col-12 d-flex align-items-start mt-2">
-                <img src="{% static 'img/chatbot.webp' %}" class="ai-image me-2" style="width: 50px; height: 50px;">
-                <div class="ai-message flex-fill mt-5 p-2 rounded">
-                    {{ c.content }}
-                </div>
+            <img src="{{ request.user.profile.photo.url }}" class="user-image mt-2" alt="User Image">
+        </div>
+
+        <!-- AI Message -->
+        <div class="row mb-4 ai-message-container">
+            <img src="{% static 'img/chatbot.webp' %}" class="ai-image mt-2" alt="AI Image">
+            <div class="ai-message mt-1" onclick="copyContent(this)" title="Click to copy">
+                {{ c.content|safe }}
             </div>
         </div>
         {% endfor %}
     </div>
-    <div class="content-form mt-4">
+
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip-hover">Click to copy</div>
+
+    <!-- Search Form -->
+    <div class="content-form">
         <form action="{% url 'generate_content' %}" method="post">
             {% csrf_token %}
             <div class="input-group rounded">
-                <input type="search" class="form-control" name="search" placeholder="Find Content ..." aria-label="Search"
-                    aria-describedby="search-addon" autofocus required />
+                <input type="search" class="form-control" name="search" placeholder="Find Content ..." aria-label="Search" aria-describedby="search-addon" autofocus required />
             </div>
         </form>
     </div>
 </div>
+
 <script>
-    // JavaScript to automatically scroll to the bottom of the message container
-    var messageContainer = document.getElementById('content-container');
+    // Auto scroll to bottom
+    const messageContainer = document.getElementById('content-container');
     messageContainer.scrollTop = messageContainer.scrollHeight;
+
+    // Copy to clipboard
+    function copyContent(element) {
+        const text = element.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            element.style.backgroundColor = "#e0ffe0";
+            setTimeout(() => {
+                element.style.backgroundColor = "";
+            }, 500);
+        });
+    }
+
+    // Tooltip behavior
+    const tooltip = document.getElementById('tooltip');
+    document.querySelectorAll('.ai-message').forEach(el => {
+        el.addEventListener('mousemove', e => {
+            tooltip.style.display = 'block';
+            tooltip.style.left = (e.clientX + 10) + 'px';
+            tooltip.style.top = (e.clientY + 10) + 'px';
+        });
+        el.addEventListener('mouseleave', () => {
+            tooltip.style.display = 'none';
+        });
+    });
 </script>
 {% endblock %}
