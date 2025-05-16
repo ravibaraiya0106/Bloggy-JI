@@ -3,7 +3,7 @@
 {% block blogsactive %}active{% endblock blogsactive %}
 {% block search %}
      <li class="nav-item ml-2 my">
-        <form method="get" action="{% url 'Blog_Search' cat_id=cat_id %}" class="d-flex" role="search">
+        <form method="get" action="{% url 'Blog_Search' cat_id=cat_id %}?v=2" class="d-flex" role="search">
             <input class="form-control me-2" type="search" name="search" id="search" placeholder="Search" aria-label="Search">
             <button class="btn" type="submit">Search</button>
         </form>

@@ -4,7 +4,7 @@
 
 {% load static %}
 {% block body %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/EditBlog.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/EditBlog.css' %}?v=2">
 <script src="{% static 'js/TinyMCE.js' %}"></script>
 <div class="container" style="margin-top:120px; margin-bottom: 100px;">
    <form action="{% url 'EditBlog' post.b_id %}" method="post" enctype="multipart/form-data">
